@@ -1,3 +1,5 @@
 ---
 # defaults file for ansible-role-fail2ban
 fail2ban_files: []
+fail2ban_filter_files: []
+fail2ban_jail_files: []

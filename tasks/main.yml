@@ -2,7 +2,7 @@
 # tasks file for ansible-role-fail2ban
 - name: 'Install fail2ban'
   apt: name=fail2ban
-- name: 'Copy filter.d'
+- name: 'Copy filter.d from fail2ban_files'
   copy:
     src: "filter_{{ item }}"
     dest: "/etc/fail2ban/filter.d/{{ item }}"
@@ -11,7 +11,16 @@
     mode: 0444
   with_items: "{{ fail2ban_files }}"
   notify: Restart fail2ban
-- name: 'Copy jail.d'
+- name: 'Copy filter.d from fail2ban_filter_files'
+  copy:
+    src: "filter_{{ item }}"
+    dest: "/etc/fail2ban/filter.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0444
+  with_items: "{{ fail2ban_filter_files }}"
+  notify: Restart fail2ban
+- name: 'Copy jail.d from fail2ban_files'
   copy:
     src: "jail_{{ item }}"
     dest: "/etc/fail2ban/jail.d/{{ item }}"
@@ -19,4 +28,13 @@
     group: root
     mode: 0444
   with_items: "{{ fail2ban_files }}"
+  notify: Restart fail2ban
+- name: 'Copy jail.d from fail2ban_jail_files'
+  copy:
+    src: "jail_{{ item }}"
+    dest: "/etc/fail2ban/jail.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0444
+  with_items: "{{ fail2ban_jail_files }}"
   notify: Restart fail2ban
